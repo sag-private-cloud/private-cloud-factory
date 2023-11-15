@@ -11,6 +11,7 @@ env:
   WPM_REGISTRY_TOKEN: ${{ secrets.WPM_REGISTRY_TOKEN }}
   DOCKER_USER: ${{ secrets.DOCKER_USER }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -23,10 +24,12 @@ jobs:
         run: |
           echo "Now validating WPM_REGISTRY_TOKEN"
           if [ -z $WPM_REGISTRY_TOKEN ]; then echo "Validation failed: WPM_REGISTRY_TOKEN is not present as a secret" && exit 1; fi
-          # echo "Now validating DOCKER_USER"
-          # if [ -z $DOCKER_USER ]; then echo "Validation failed: DOCKER_USER is not present as a secret" && exit 1; fi
-          # echo "Now validating DOCKER_PASSWORD"
-          # if [ -z $DOCKER_PASSWORD ]; then echo "Validation failed: DOCKER_PASSWORD is not present as a secret" && exit 1; fi
+          echo "Now validating DOCKER_USER"
+          if [ -z $DOCKER_USER ]; then echo "Validation failed: DOCKER_USER is not present as a secret" && exit 1; fi
+          echo "Now validating DOCKER_PASSWORD"
+          if [ -z $DOCKER_PASSWORD ]; then echo "Validation failed: DOCKER_PASSWORD is not present as a secret" && exit 1; fi
+          echo "Now validating DOCKER_REGISTRY"
+          if [ -z $DOCKER_REGISTRY ]; then echo "Validation failed: DOCKER_REGISTRY is not present as a secret" && exit 1; fi
 
 
   # This workflow contains a single job called "build"

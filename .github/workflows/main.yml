@@ -4,9 +4,12 @@ name: CI
 
 # Controls when the workflow will run
 on:
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+env:
+  WPM_REGISTRY_TOKEN: ${{ secrets.WPM_REGISTRY_TOKEN }}
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -15,11 +18,14 @@ jobs:
     runs-on: gepe-wsl
     steps:
       - name: Validate
-        run: echo "validating all inputs"
+        run: |
+          echo "Now validating WPM_REGISTRY_TOKEN"
+          if [ -z $WPM_REGISTRY_TOKEN ]; then echo "Validation failed: WPM_REGISTRY_TOKEN is not present as a secret" && exit 1; fi
 
 
   # This workflow contains a single job called "build"
   build:
+    needs: [init]
     name: Build image
     # The type of runner that the job will run on
     runs-on: gepe-wsl
@@ -34,6 +40,7 @@ jobs:
         run: echo "build image"
 
   deploy:
+    needs: [build]
     name: Deploy the solution to the cloud
     runs-on: gepe-wsl
 

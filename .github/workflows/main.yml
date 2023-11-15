@@ -34,17 +34,13 @@ jobs:
     name: Init and validate outputs
     runs-on: gepe-wsl
     steps:
+      - uses: actions/checkout@v3
       - name: Validate
         run: |
-          echo "Now validating WPM_REGISTRY_TOKEN"
-          if [ -z $WPM_REGISTRY_TOKEN ]; then echo "Validation failed: WPM_REGISTRY_TOKEN is not present as a secret" && exit 1; fi
-          echo "Now validating DOCKER_USER"
-          if [ -z $DOCKER_USER ]; then echo "Validation failed: DOCKER_USER is not present as a secret" && exit 1; fi
-          echo "Now validating DOCKER_PASSWORD"
-          if [ -z $DOCKER_PASSWORD ]; then echo "Validation failed: DOCKER_PASSWORD is not present as a secret" && exit 1; fi
-          echo "Now validating DOCKER_REGISTRY"
-          if [ -z $DOCKER_REGISTRY ]; then echo "Validation failed: DOCKER_REGISTRY is not present as a secret" && exit 1; fi
-
+          ./scripts/validate_input.sh WPM_REGISTRY_TOKEN "$WPM_REGISTRY_TOKEN"
+          ./scripts/validate_input.sh DOCKER_REGISTRY "$DOCKER_REGISTRY"
+          ./scripts/validate_input.sh DOCKER_USER "$DOCKER_USER"
+          ./scripts/validate_input.sh DOCKER_PASSWORD "$DOCKER_PASSWORD"
 
   # This workflow contains a single job called "build"
   build:

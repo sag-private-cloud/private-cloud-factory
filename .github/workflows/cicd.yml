@@ -20,7 +20,7 @@ on:
 
 
 env:
-  WPM_REGISTRY_TOKEN: ${{ secrets.WPM_REGISTRY_TOKEN }}
+  SAG_WPM_TOKEN: ${{ secrets.SAG_WPM_TOKEN }}
   DOCKER_USER: ${{ vars.DOCKER_USER }}            # TODO change to secret with different username
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
@@ -37,7 +37,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Validate
         run: |
-          ./scripts/validate_input.sh WPM_REGISTRY_TOKEN "$WPM_REGISTRY_TOKEN"
+          ./scripts/validate_input.sh SAG_WPM_TOKEN "$SAG_WPM_TOKEN"
           ./scripts/validate_input.sh DOCKER_REGISTRY "$DOCKER_REGISTRY"
           ./scripts/validate_input.sh DOCKER_USER "$DOCKER_USER"
           ./scripts/validate_input.sh DOCKER_PASSWORD "$DOCKER_PASSWORD"

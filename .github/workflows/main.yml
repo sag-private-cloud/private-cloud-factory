@@ -9,6 +9,8 @@ on:
 
 env:
   WPM_REGISTRY_TOKEN: ${{ secrets.WPM_REGISTRY_TOKEN }}
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -21,6 +23,10 @@ jobs:
         run: |
           echo "Now validating WPM_REGISTRY_TOKEN"
           if [ -z $WPM_REGISTRY_TOKEN ]; then echo "Validation failed: WPM_REGISTRY_TOKEN is not present as a secret" && exit 1; fi
+          # echo "Now validating DOCKER_USER"
+          # if [ -z $DOCKER_USER ]; then echo "Validation failed: DOCKER_USER is not present as a secret" && exit 1; fi
+          # echo "Now validating DOCKER_PASSWORD"
+          # if [ -z $DOCKER_PASSWORD ]; then echo "Validation failed: DOCKER_PASSWORD is not present as a secret" && exit 1; fi
 
 
   # This workflow contains a single job called "build"
@@ -37,7 +43,19 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Build the image
-        run: echo "build image"
+        uses: sag-private-cloud/sag-build-image@main
+        with:
+          context: "."
+          dockerfile: Dockerfile_MSR
+          image-name: flinttechcontainers.azurecr.io/esbmsr:dev
+          wpm-registry: softwareag
+          wpm-registry-token: $WPM_REGISTRY_TOKEN
+          packages: WmJDBCAdapter:10.3.0
+
+      - name: Push the image to the ACR
+        run: |
+          echo docker login flinttechcontainers.azurecr.io -u $DOCKER_USER $DOCKER_PASSWORD
+          echo docker push 
 
   deploy:
     needs: [build]

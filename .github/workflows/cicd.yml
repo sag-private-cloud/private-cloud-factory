@@ -24,6 +24,8 @@ env:
   DOCKER_USER: ${{ vars.DOCKER_USER }}            # TODO change to secret with different username
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+  SAG_CR_USER: ${{ secrets.SAG_CR_USER }}
+  SAG_CR_PASSWORD: ${{ secrets.SAG_CR_PASSWORD }}
   IMAGE_REPOSITORY: ${{ inputs.image_repository }}
   IMAGE_TAG: ${{ inputs.image_tag }}
 

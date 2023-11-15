@@ -7,7 +7,7 @@ A template repository for kick-starting Private Cloud CI/CD creation for Softwar
 # Prerequisites
 - :package: Container registry for pushing your customized image(s)
 - :cloud: Kubernetes cluster for deploying your solution(s), supporting Docker in Docker
-- :arrow_forward: GitHub runner(s) with Docker and Helm installed for running the CI/CD process on
+- :arrow_forward: GitHub runner(s) with Docker and Helm installed for running the CI/CD process on (labeled "rufus")
 - :key: Define the following secrets for accessing the **Software AG** services:
   - SAG_CR_USER (secret) - Username for https://containers.softwareag.com/
   - SAG_CR_PASSWORD (secret) - Password/token for https://containers.softwareag.com/

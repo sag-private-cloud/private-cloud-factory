@@ -54,6 +54,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      - name: Login to the SAG CR
+        run: docker login -u $SAG_CR_USER -p $SAG_CR_PASSWORD sagcr.azurecr.io
+          
       # Runs a single command using the runners shell
       - name: Build the image
         uses: sag-private-cloud/sag-build-image@v1

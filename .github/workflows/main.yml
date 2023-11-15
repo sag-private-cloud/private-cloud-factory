@@ -10,10 +10,19 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  init:
+    name: Init and validate outputs
+    runs-on: gepe-wsl
+    steps:
+      - name: Validate
+        run: echo "validating all inputs"
+
+
   # This workflow contains a single job called "build"
   build:
+    name: Build image
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: gepe-wsl
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -21,11 +30,13 @@ jobs:
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Build the image
+        run: echo "build image"
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+  deploy:
+    name: Deploy the solution to the cloud
+    runs-on: gepe-wsl
+
+    steps:
+      - name: Deploy
+        run: echo "deploy the image to the cluster"

@@ -22,3 +22,10 @@ A template repository for kick-starting Private Cloud CI/CD creation for Softwar
 - (Optional) Modify the ./github/workflows/cicd.yml if you need container or deployment specifics:
   - The env/PACKAGES value with the list of Software AG packages that you need on top of the base runtime
   - The application properties
+
+# Used Software AG services and tools
+- https://containers.softwareag.com/ - Software AG Container registry
+- https://packages.softwareag.com/ - Software AG Packages registry
+- https://sag-private-cloud.github.io/private-cloud-helm-charts/ - Software AG Helm charts registry
+- https://github.com/sag-private-cloud/sag-build-image - Software AG GitHub action for building container images
+- This template repository as a kick-starter for workflow orchestration

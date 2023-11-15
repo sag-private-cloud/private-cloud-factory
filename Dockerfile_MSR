@@ -1,0 +1,9 @@
+ARG baseruntime=sagcr.azurecr.io/esbmsr:11.0
+
+FROM ${baseruntime} 
+ARG registryserver=https://packages.softwareag.com
+ARG registry=softwareag
+ARG packages=                                             
+
+WORKDIR /opt/softwareag
+RUN [ -n "$packages" ] && ./wpm/bin/wpm.sh install ${packages} -ws ${registryserver} -wpr_registry ${registry} -target_installation /opt/softwareag/IntegrationServer || echo "No packages provided for installation."

@@ -6,8 +6,17 @@ name: CI
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    # inputs:
-    #   repository:
+    inputs:
+      image_repository:
+        description: Image repository
+        required: true
+        default: esbmsr
+        type: string
+      image_tag:
+        description: Image tag
+        required: true
+        default: dev
+        type: string
 
 
 env:
@@ -15,6 +24,8 @@ env:
   DOCKER_USER: ${{ vars.DOCKER_USER }}            # TODO change to secret with different username
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+  IMAGE_REPOSITORY: ${{ inputs.image_repository }}
+  IMAGE_TAG: ${{ inputs.image_tag }}
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -53,7 +64,7 @@ jobs:
         with:
           context: "."
           dockerfile: Dockerfile_MSR
-          image-name: flinttechcontainers.azurecr.io/esbmsr:dev
+          image-name: ${DOCKER_REGISTRY}/${IMAGE_REPOSITORY}:${IMAGE_TAG}
           wpm-registry: softwareag
           wpm-registry-token: $WPM_REGISTRY_TOKEN
           packages: WmJDBCAdapter:10.3.0
@@ -61,7 +72,7 @@ jobs:
       - name: Push the image to the ACR
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD $DOCKER_REGISTRY
-          docker push flinttechcontainers.azurecr.io/esbmsr:dev
+          docker push ${DOCKER_REGISTRY}/${IMAGE_REPOSITORY}:${IMAGE_TAG}
 
   deploy:
     needs: [build]

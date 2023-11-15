@@ -1,5 +1,5 @@
 # Status of private-cloud-factory
-![CI/CD](https://github.com/sag-private-cloud/private-cloud-factory/actions/workflows/main.yml/badge.svg)
+![CI/CD](https://github.com/sag-private-cloud/private-cloud-factory/actions/workflows/cicd.yml/badge.svg)
 
 # General information
 A template repository for kick-starting Private Cloud CI/CD creation for Software AG products. 
@@ -16,3 +16,9 @@ A template repository for kick-starting Private Cloud CI/CD creation for Softwar
   - DOCKER_REGISTRY (var) - Your container registry server
   - DOCKER_USER (secret) - Username for your container registry
   - DOCKER_PASSWORD (secret) - Password/token for your container registry
+
+# Usage
+- Use the template by clicking "Use this template" at the top and specify the new repository name
+- (Optional) Modify the ./github/workflows/cicd.yml if you need container or deployment specifics:
+  - The env/PACKAGES value with the list of Software AG packages that you need on top of the base runtime
+  - The application properties

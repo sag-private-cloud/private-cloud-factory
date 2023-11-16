@@ -74,6 +74,8 @@ jobs:
     runs-on: rufus
 
     steps:
+      - uses: actions/checkout@v3
+      
       - name: Add Software AG Helm Charts repository
         uses: sag-private-cloud/sag-helm-add-repo@v1
         

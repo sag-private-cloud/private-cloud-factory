@@ -83,5 +83,5 @@ jobs:
         
       - name: Deploy
         run: |
-          kubectl create secret docker-registry regcred --docker-server=$DOCKER_REGISTRY --docker-username=$DOCKER_USER --docker-password=$DOCKER_PASSWORD
+          kubectl create secret docker-registry regcred --docker-server=$DOCKER_REGISTRY --docker-username=$DOCKER_USER --docker-password=$DOCKER_PASSWORD || true
           helm upgrade msr --install --set "image.repository=${{ needs.build.outputs.imageName }}" softwareag/microservices-runtime

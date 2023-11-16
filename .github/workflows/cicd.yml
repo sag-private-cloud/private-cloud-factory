@@ -29,7 +29,7 @@ env:
 jobs:
   init:
     name: Init and validate inputs
-    runs-on: gepe-wsl
+    runs-on: cicd
     steps:
       - uses: actions/checkout@v3
       - name: Validate
@@ -44,7 +44,7 @@ jobs:
   build:
     needs: [init]
     name: Build image
-    runs-on: gepe-wsl
+    runs-on: cicd
     outputs:
       imageName: ${{ steps.build-image.outputs.image-name }}
     steps:
@@ -75,7 +75,7 @@ jobs:
   deploy:
     needs: [build]
     name: Deploy the solution to the cloud
-    runs-on: gepe-wsl
+    runs-on: cicd
 
     steps:
       - name: Add Software AG Helm Charts repository

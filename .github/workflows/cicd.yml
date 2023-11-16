@@ -61,7 +61,7 @@ jobs:
           
       # Runs a single command using the runners shell
       - name: Build the image
-        uses: sag-private-cloud/sag-build-image@main
+        uses: sag-private-cloud/sag-build-image@v1.1
         with:
           context: "."
           dockerfile: Dockerfile_MSR

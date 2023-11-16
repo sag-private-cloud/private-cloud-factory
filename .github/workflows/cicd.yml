@@ -69,6 +69,8 @@ jobs:
           wpm-registry: softwareag
           wpm-registry-token: $WPM_REGISTRY_TOKEN
           packages: WmJDBCAdapter:10.3.0
+          custom-packages: MeatballMachine
+          custom-packages-org-url: https://github.com/flint-tech-solutions
 
       - name: Push the image to the ACR
         run: |

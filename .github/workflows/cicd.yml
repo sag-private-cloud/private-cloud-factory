@@ -83,4 +83,4 @@ jobs:
         
       - name: Deploy
         run: | 
-          helm upgrade msr --set "image.repository=${{ needs.build.outputs.coreImageName }}" softwareag/microservices-runtime
+          helm upgrade msr --install --set "image.repository=${{ needs.build.outputs.coreImageName }}" softwareag/microservices-runtime

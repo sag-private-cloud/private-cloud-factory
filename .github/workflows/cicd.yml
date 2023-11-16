@@ -5,6 +5,13 @@ on:
 
 
 env:
+  #################################
+  ### Container image specifics ###
+  PACKAGES: 'WmJDBCAdapter:10.3.0'
+  CUSTOM_PACKAGES: 'MeatballMachine'
+  CUSTOM_PACKAGES_ORG_URL: 'https://github.com/flint-tech-solutions'
+  ##################################
+  
   SAG_WPM_TOKEN: ${{ secrets.SAG_WPM_TOKEN }}
   DOCKER_USER: ${{ vars.DOCKER_USER }}            # TODO change to secret with different username
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -52,9 +59,9 @@ jobs:
           image-name: ${DOCKER_REGISTRY}/${IMAGE_REPOSITORY}:${IMAGE_TAG}
           wpm-registry: softwareag
           wpm-registry-token: $SAG_WPM_TOKEN
-          packages: WmJDBCAdapter:10.3.0
-          custom-packages: MeatballMachine
-          custom-packages-org-url: https://github.com/flint-tech-solutions
+          packages: $PACKAGES
+          custom-packages: $CUSTOM_PACKAGES
+          custom-packages-org-url: $CUSTOM_PACKAGES_ORG_URL
 
       - name: Push the image to the CR
         run: |

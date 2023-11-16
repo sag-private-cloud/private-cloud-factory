@@ -82,5 +82,6 @@ jobs:
         uses: sag-private-cloud/sag-helm-add-repo@v1
         
       - name: Deploy
-        run: | 
+        run: |
+          kubectl create secret docker-registry regcred --docker-server=$DOCKER_REGISTRY --docker-username=$DOCKER_USER --docker-password=$DOCKER_PASSWORD
           helm upgrade msr --install --set "image.repository=${{ needs.build.outputs.imageName }}" softwareag/microservices-runtime

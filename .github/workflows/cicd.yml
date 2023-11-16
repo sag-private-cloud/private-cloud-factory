@@ -64,7 +64,7 @@ jobs:
         uses: sag-private-cloud/sag-build-image@v1.1
         with:
           context: "."
-          dockerfile: Dockerfile_MSR
+          dockerfile: MSR/Dockerfile
           image-name: ${DOCKER_REGISTRY}/${IMAGE_REPOSITORY}:${IMAGE_TAG}
           wpm-registry: softwareag
           wpm-registry-token: $SAG_WPM_TOKEN

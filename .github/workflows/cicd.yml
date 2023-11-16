@@ -67,7 +67,7 @@ jobs:
           dockerfile: Dockerfile_MSR
           image-name: ${DOCKER_REGISTRY}/${IMAGE_REPOSITORY}:${IMAGE_TAG}
           wpm-registry: softwareag
-          wpm-registry-token: $WPM_REGISTRY_TOKEN
+          wpm-registry-token: $SAG_WPM_TOKEN
           packages: WmJDBCAdapter:10.3.0
           custom-packages: MeatballMachine
           custom-packages-org-url: https://github.com/flint-tech-solutions

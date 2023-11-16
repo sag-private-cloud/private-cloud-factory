@@ -8,7 +8,7 @@ env:
   #################################
   ### Container image specifics ###
   PACKAGES: 'WmJDBCAdapter:10.3.0.20'
-  CUSTOM_PACKAGES: 'MeatballMachine'
+  CUSTOM_PACKAGES: 'FlintEmployeeRegistry'
   CUSTOM_PACKAGES_ORG_URL: 'https://github.com/flint-tech-solutions'
   ##################################
   

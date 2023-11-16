@@ -83,5 +83,8 @@ jobs:
     runs-on: gepe-wsl
 
     steps:
+      - name: Add Software AG Helm Charts repository
+        uses: sag-private-cloud/sag-helm-add-repo@v1
+        
       - name: Deploy
         run: echo "deploy the image to the cluster"

@@ -72,7 +72,7 @@ jobs:
           custom-packages: MeatballMachine
           custom-packages-org-url: https://github.com/flint-tech-solutions
 
-      - name: Push the image to the ACR
+      - name: Push the image to the CR
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD $DOCKER_REGISTRY
           docker push ${DOCKER_REGISTRY}/${IMAGE_REPOSITORY}:${IMAGE_TAG}

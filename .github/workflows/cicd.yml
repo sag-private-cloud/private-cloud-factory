@@ -85,4 +85,6 @@ jobs:
           docker-registry: $DOCKER_REGISTRY
           docker-username: $DOCKER_USER
           docker-password: $DOCKER_PASSWORD
-          extra-args: '--set "image.repository=${{ needs.build.outputs.imageName }}"'
+          extra-args: >- 
+            --set "msr.image=${{ needs.build.outputs.imageName }}" 
+            --set-file externalFiles.properties=${{ github.workspace }}/MSR/application.properties

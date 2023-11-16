@@ -2,17 +2,6 @@ name: CI/CD
 
 on:
   workflow_dispatch:
-    inputs:
-      image_repository:
-        description: Image repository
-        required: true
-        default: esbmsr
-        type: string
-      image_tag:
-        description: Image tag
-        required: true
-        default: dev
-        type: string
 
 
 env:
@@ -22,8 +11,8 @@ env:
   DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
   SAG_CR_USER: ${{ secrets.SAG_CR_USER }}
   SAG_CR_PASSWORD: ${{ secrets.SAG_CR_PASSWORD }}
-  IMAGE_REPOSITORY: ${{ inputs.image_repository }}
-  IMAGE_TAG: ${{ inputs.image_tag }}
+  IMAGE_REPOSITORY: esbmsr
+  IMAGE_TAG: dev
 
 
 jobs:
@@ -85,3 +74,4 @@ jobs:
         run: |
           kubectl create secret docker-registry regcred --docker-server=$DOCKER_REGISTRY --docker-username=$DOCKER_USER --docker-password=$DOCKER_PASSWORD || true
           helm upgrade msr --install --set "image.repository=${{ needs.build.outputs.imageName }}" softwareag/microservices-runtime
+          helm list

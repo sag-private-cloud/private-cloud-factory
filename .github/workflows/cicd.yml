@@ -28,7 +28,7 @@ env:
 
 jobs:
   init:
-    name: Init and validate outputs
+    name: Init and validate inputs
     runs-on: gepe-wsl
     steps:
       - uses: actions/checkout@v3
@@ -38,6 +38,8 @@ jobs:
           ./scripts/validate_input.sh DOCKER_REGISTRY "$DOCKER_REGISTRY"
           ./scripts/validate_input.sh DOCKER_USER "$DOCKER_USER"
           ./scripts/validate_input.sh DOCKER_PASSWORD "$DOCKER_PASSWORD"
+          ./scripts/validate_input.sh SAG_CR_USER "$SAG_CR_USER"
+          ./scripts/validate_input.sh SAG_CR_PASSWORD "$SAG_CR_PASSWORD"
 
   build:
     needs: [init]

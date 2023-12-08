@@ -21,6 +21,7 @@ A template repository for kick-starting Private Cloud CI/CD creation for Softwar
 - Use the template by clicking "Use this template" at the top and specify the new repository name
 - (Optional) Modify the ./github/workflows/cicd.yml if you need container or deployment specifics:
   - The env/PACKAGES value with the list of Software AG packages that you need on top of the base runtime
+  - The env/CUSTOM_PACKAGES and env/CUSTOM_PACKAGES_ORG_URL values with the list of custom packages (and their Github organization url) that you need on top of the base runtime
   - The application properties
 
 # Used Software AG services and tools

@@ -1,7 +1,7 @@
 ARG baseruntime=sagcr.azurecr.io/esbmsr:11.0
  
 FROM ${baseruntime} 
-ARG wpmregistryserver=https://packages.softwareag.com
+ARG wpmregistryserver=https://packages.webmethods.io
 ARG wpmregistry=softwareag
 ARG wpmregistrytoken=
 ARG packages=

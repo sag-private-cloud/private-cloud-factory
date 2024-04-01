@@ -2,91 +2,155 @@ name: CI/CD
 
 on:
   workflow_dispatch:
-
+    inputs:
+      baseImage:
+        description: 'The base webMethods product image to use'
+        default: 'sagcr.azurecr.io/esbmsr:11.0'
+        required: false
+        type: string
+      dockerImage:
+        description: 'Repository and Tag segments of the solution docker image to build (repository:tag)'
+        default: 'msr:dev'
+        required: true
+        type: string
+      sagPackages:
+        description: 'List of Software AG packages that you need on top of the base runtime (space-separated)'
+        default: ''
+        type: string
+      customPackages:
+        description: 'List of custom packages that you need on top of the base runtime (spece-separated)'
+        default: ''
+        type: string
+      customPackagesOrgUrl:
+        description: 'GitHub organization URL for the above custom packages'
+        default: ''
+        type: string
+      deploymentReleaseName:
+        description: 'Name of the solution deployment release to install or upgrade'
+        default: 'msr'
+        required: true
+        type: string
+  workflow_call: # Support for reusable workflows. Example: Have the current workflow code executed multiple times per single microservice in a parent workflow that handles the entire solution.
+    inputs:
+      baseImage:
+        description: 'The base webMethods product image to use'
+        default: 'sagcr.azurecr.io/esbmsr:11.0'
+        required: false
+        type: string
+      dockerImage:
+        description: 'Repository and Tag segments of the solution docker image to build (repository:tag)'
+        default: 'msr:dev'
+        required: true
+        type: string
+      sagPackages:
+        description: 'List of Software AG packages that you need on top of the base runtime (space-separated)'
+        default: ''
+        type: string
+      customPackages:
+        description: 'List of custom packages that you need on top of the base runtime (spece-separated)'
+        default: ''
+        type: string
+      customPackagesOrgUrl:
+        description: 'GitHub organization URL for the above custom packages'
+        default: ''
+        type: string
+      deploymentReleaseName:
+        description: 'Name of the solution deployment release to install or upgrade'
+        default: 'msr'
+        required: true
+        type: string
 
 env:
-  #################################
-  ### Container image specifics ###
-  PACKAGES: ''
-  CUSTOM_PACKAGES: ''
-  CUSTOM_PACKAGES_ORG_URL: ''
-  ##################################
-  
-  SAG_WPM_TOKEN: ${{ secrets.SAG_WPM_TOKEN }}
-  DOCKER_USER: ${{ vars.DOCKER_USER }}            # TODO change to secret with different username
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
   SAG_CR_USER: ${{ secrets.SAG_CR_USER }}
   SAG_CR_PASSWORD: ${{ secrets.SAG_CR_PASSWORD }}
-  IMAGE_REPOSITORY: esbmsr
-  IMAGE_TAG: dev
+  SAG_WPM_TOKEN: ${{ secrets.SAG_WPM_TOKEN }}
+  
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+
+  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
 
 jobs:
   init:
-    name: Init and validate inputs
-    runs-on: rufus
+    name: Initialize and Validate inputs
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Validate
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Validate inputs
         run: |
-          ./scripts/validate_input.sh SAG_WPM_TOKEN "$SAG_WPM_TOKEN"
-          ./scripts/validate_input.sh DOCKER_REGISTRY "$DOCKER_REGISTRY"
-          ./scripts/validate_input.sh DOCKER_USER "$DOCKER_USER"
-          ./scripts/validate_input.sh DOCKER_PASSWORD "$DOCKER_PASSWORD"
-          ./scripts/validate_input.sh SAG_CR_USER "$SAG_CR_USER"
-          ./scripts/validate_input.sh SAG_CR_PASSWORD "$SAG_CR_PASSWORD"
+          ./scripts/validate_input.sh SAG_CR_USER "${SAG_CR_USER}"
+          ./scripts/validate_input.sh SAG_CR_PASSWORD "${SAG_CR_PASSWORD}"
+          ./scripts/validate_input.sh SAG_WPM_TOKEN "${SAG_WPM_TOKEN}"
+          ./scripts/validate_input.sh DOCKER_USER "${DOCKER_USER}"
+          ./scripts/validate_input.sh DOCKER_PASSWORD "${DOCKER_PASSWORD}"
+          ./scripts/validate_input.sh DOCKER_REGISTRY "${DOCKER_REGISTRY}"
+          ./scripts/validate_input.sh KUBE_CONFIG "${KUBE_CONFIG}"
 
   build:
     needs: [init]
-    name: Build image
-    runs-on: rufus
+    name: Build Image
+    runs-on: ubuntu-latest
     outputs:
-      imageName: ${{ steps.build-image.outputs.image-name }}
+      imageRepository: ${{ steps.build-image.outputs.image-repository }}
+      imageTag: ${{ steps.build-image.outputs.image-tag }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Login to the SAG CR
-        run: docker login -u $SAG_CR_USER -p $SAG_CR_PASSWORD sagcr.azurecr.io
+      - name: Login to Software AG Container Registry
+        run: docker login -u ${SAG_CR_USER} -p ${SAG_CR_PASSWORD} sagcr.azurecr.io
           
-      # Runs a single command using the runners shell
-      - name: Build the image
+      - name: Build custom image
         id: build-image
-        uses: sag-private-cloud/sag-build-image@v1.1
+        uses: sag-private-cloud/sag-build-image@v2
         with:
           context: "."
           dockerfile: MSR/Dockerfile
-          image-name: ${DOCKER_REGISTRY}/${IMAGE_REPOSITORY}:${IMAGE_TAG}
+          base-runtime: ${{ inputs.baseImage }}
+          image-name: ${DOCKER_REGISTRY}/${{ inputs.dockerImage }}
           wpm-registry: softwareag
-          wpm-registry-token: $SAG_WPM_TOKEN
-          packages: $PACKAGES
-          custom-packages: $CUSTOM_PACKAGES
-          custom-packages-org-url: $CUSTOM_PACKAGES_ORG_URL
+          wpm-registry-token: ${SAG_WPM_TOKEN}
+          packages: ${{ inputs.sagPackages }}
+          custom-packages: ${{ inputs.customPackages }}
+          custom-packages-org-url: ${{ inputs.customPackagesOrgUrl }}
 
-      - name: Push the image to the CR
+      - name: Push custom image to organization container registry  
         run: |
-          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD $DOCKER_REGISTRY
-          docker push ${DOCKER_REGISTRY}/${IMAGE_REPOSITORY}:${IMAGE_TAG}
+          docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD} ${DOCKER_REGISTRY}
+          docker push ${DOCKER_REGISTRY}/${{ inputs.dockerImage }}
 
   deploy:
     needs: [build]
-    name: Deploy the solution to the cloud
-    runs-on: rufus
-
+    name: Deploy Solution
+    runs-on: ubuntu-latest
+    env:
+      KUBECONFIG: ${{ github.workspace }}/${{ github.run_number }}-kubeconf
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate against Kubernetes cluster
+        run: echo "${KUBE_CONFIG}" > ${KUBECONFIG}
       
-      - name: Add Software AG Helm Charts repository
-        uses: sag-private-cloud/sag-helm-add-repo@v1
+      - name: Add webMethods Helm Charts repository
+        uses: sag-private-cloud/sag-helm-add-repo@v3
         
-      - name: Deploy
-        uses: sag-private-cloud/sag-helm-deploy@v1
+      - name: Deploy solution
+        uses: sag-private-cloud/sag-helm-deploy@v3
         with: 
-          release-name: msr
-          helm-chart: softwareag/microservices-runtime
-          docker-registry: $DOCKER_REGISTRY
-          docker-username: $DOCKER_USER
-          docker-password: $DOCKER_PASSWORD
+          release-name: ${{ inputs.deploymentReleaseName }}
+          helm-chart: webMethods/microservicesruntime
+          docker-registry: ${DOCKER_REGISTRY}
+          docker-username: ${DOCKER_USER}
+          docker-password: ${DOCKER_PASSWORD}
           extra-args: >- 
-            --set "msr.image=${{ needs.build.outputs.imageName }}" 
-            --set-file externalFiles.properties=${{ github.workspace }}/MSR/application.properties
+            --set "image.repository=${{ needs.build.outputs.imageRepository }}"
+            --set "image.tag=${{ needs.build.outputs.imageTag }}" 
+      
+      - name: Cleanup runner
+        if: always()
+        run: rm -rf ${KUBECONFIG}

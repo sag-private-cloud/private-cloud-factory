@@ -3,6 +3,11 @@ name: CI/CD
 on:
   workflow_dispatch:
     inputs:
+      dockerfile:
+        description: 'The Dockerfile to use for the docker image build'
+        default: 'MSR/Dockerfile'
+        required: true
+        type: string
       baseImage:
         description: 'The base webMethods product image to use'
         default: 'sagcr.azurecr.io/esbmsr:11.0'
@@ -25,6 +30,11 @@ on:
         description: 'GitHub organization URL for the above custom packages'
         default: ''
         type: string
+      deploymentHelmChart:
+        description: 'The name of the Helm chart to deploy'
+        default: 'webMethods/microservicesruntime'
+        required: true
+        type: string
       deploymentReleaseName:
         description: 'Name of the solution deployment release to install or upgrade'
         default: 'msr'
@@ -32,6 +42,11 @@ on:
         type: string
   workflow_call: # Support for reusable workflows. Example: Have the current workflow code executed multiple times per single microservice in a parent workflow that handles the entire solution.
     inputs:
+      dockerfile:
+        description: 'The Dockerfile to use for the docker image build'
+        default: 'MSR/Dockerfile'
+        required: true
+        type: string
       baseImage:
         description: 'The base webMethods product image to use'
         default: 'sagcr.azurecr.io/esbmsr:11.0'
@@ -53,6 +68,11 @@ on:
       customPackagesOrgUrl:
         description: 'GitHub organization URL for the above custom packages'
         default: ''
+        type: string
+      deploymentHelmChart:
+        description: 'The name of the Helm chart to deploy'
+        default: 'webMethods/microservicesruntime'
+        required: true
         type: string
       deploymentReleaseName:
         description: 'Name of the solution deployment release to install or upgrade'
@@ -109,7 +129,7 @@ jobs:
         uses: sag-private-cloud/sag-build-image@v2
         with:
           context: "."
-          dockerfile: MSR/Dockerfile
+          dockerfile: ${{ inputs.dockerfile }}
           base-runtime: ${{ inputs.baseImage }}
           image-name: ${DOCKER_REGISTRY}/${{ inputs.dockerImage }}
           wpm-registry: softwareag
@@ -143,7 +163,7 @@ jobs:
         uses: sag-private-cloud/sag-helm-deploy@v3
         with: 
           release-name: ${{ inputs.deploymentReleaseName }}
-          helm-chart: webMethods/microservicesruntime
+          helm-chart: ${{ inputs.deploymentHelmChart }}
           docker-registry: ${DOCKER_REGISTRY}
           docker-username: ${DOCKER_USER}
           docker-password: ${DOCKER_PASSWORD}

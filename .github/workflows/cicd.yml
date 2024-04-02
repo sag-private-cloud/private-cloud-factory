@@ -18,7 +18,7 @@ on:
         default: ''
         type: string
       customPackages:
-        description: 'List of custom packages that you need on top of the base runtime (spece-separated)'
+        description: 'List of custom packages that you need on top of the base runtime (space-separated)'
         default: ''
         type: string
       customPackagesOrgUrl:

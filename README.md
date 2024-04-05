@@ -23,6 +23,34 @@ A template repository for kick-starting Private Cloud CI/CD creation for webMeth
 - Actions -> CI/CD -> Run workflow -> Provide container and/or deployment specifics -> Run workflow
 - Alternatively, edit the .github/workflows/cicd.yml workflow for embedding the container and/or deployment specifics, specify triggers or add extra configurations.
 
+# Result
+```mermaid
+flowchart LR;
+    subgraph Deploy
+      G[Solution Deployment] -->|pull chart| H([charts.webmethods.io])
+      G[Solution Deployment] -->|deploy to| F([Organization Kubernetes Cluster])
+    end
+    subgraph Push
+      E[Solution Image] -->|push image| K([Organization Container Registry])
+    end
+   
+    subgraph Build
+      B[Solution Image Build] -->|pull image| A([containers.softwareag.com]);
+      B[Solution Image Build] -->|pull packages| C([packages.webmethods.io]);
+      B[Solution Image Build] -->|pull packages| D([Organization custom packages in github.com]);
+    end
+    G[Solution Deployment] -->|pull image| K
+    B[Solution Image Build] -->|produces| E[Solution Image]
+
+    style A fill:#9ACD32
+    style C fill:#9ACD32
+    style H fill:#9ACD32
+
+    style F fill:#FFFF00
+    style K fill:#FFFF00
+    style D fill:#FFFF00
+```
+
 # Used Software AG services and tools
 - https://containers.softwareag.com/ - Software AG Container registry
 - https://packages.webmethods.io/ - webMethods Packages registry

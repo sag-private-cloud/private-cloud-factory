@@ -10,7 +10,7 @@ on:
         type: string
       baseImage:
         description: 'The base webMethods product image to use'
-        default: 'sagcr.azurecr.io/esbmsr:11.0'
+        default: 'sagcr.azurecr.io/microservicesruntime-wpm:10.15'
         required: false
         type: string
       dockerImage:

@@ -1,4 +1,4 @@
-ARG baseruntime=sagcr.azurecr.io/esbmsr:11.0
+ARG baseruntime=sagcr.azurecr.io/microservicesruntime-wpm:10.15
  
 FROM ${baseruntime} 
 ARG wpmregistryserver=https://packages.webmethods.io

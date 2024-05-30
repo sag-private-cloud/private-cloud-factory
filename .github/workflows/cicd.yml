@@ -126,7 +126,7 @@ jobs:
           
       - name: Build custom image
         id: build-image
-        uses: sag-private-cloud/sag-build-image@v2
+        uses: wm-private-cloud/wm-build-image@v2
         with:
           context: "."
           dockerfile: ${{ inputs.dockerfile }}
@@ -157,10 +157,10 @@ jobs:
         run: echo "${KUBE_CONFIG}" > ${KUBECONFIG}
       
       - name: Add webMethods Helm Charts repository
-        uses: sag-private-cloud/sag-helm-add-repo@v3
+        uses: wm-private-cloud/wm-helm-add-repo@v3
         
       - name: Deploy solution
-        uses: sag-private-cloud/sag-helm-deploy@v3
+        uses: wm-private-cloud/wm-helm-deploy@v3
         with: 
           release-name: ${{ inputs.deploymentReleaseName }}
           helm-chart: ${{ inputs.deploymentHelmChart }}

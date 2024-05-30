@@ -1,7 +1,5 @@
 # webMethods Private Cloud Factory
 
-![CI/CD](https://github.com/sag-private-cloud/private-cloud-factory/actions/workflows/cicd.yml/badge.svg)
-
 # General information
 A template repository for kick-starting Private Cloud CI/CD creation for webMethods products. 
 
@@ -55,7 +53,7 @@ flowchart LR;
 - https://containers.softwareag.com/ - Software AG Container registry
 - https://packages.webmethods.io/ - webMethods Packages registry
 - https://charts.webmethods.io - webMethods Helm charts registry
-- https://github.com/sag-private-cloud/sag-build-image - webMethods GitHub action for building customized webMethods container images
-- https://github.com/sag-private-cloud/sag-helm-add-repo - webMethods GitHub action for adding the webMethods Helm charts registry
-- https://github.com/sag-private-cloud/sag-helm-deploy - webMethods GitHub action for deploying webMethods Helm charts
-- https://github.com/sag-private-cloud/private-cloud-factory - This template repository as a kick-starter for workflow orchestration
+- https://github.com/wm-private-cloud/wm-build-image - webMethods GitHub action for building customized webMethods container images
+- https://github.com/wm-private-cloud/wm-helm-add-repo - webMethods GitHub action for adding the webMethods Helm charts registry
+- https://github.com/wm-private-cloud/wm-helm-deploy - webMethods GitHub action for deploying webMethods Helm charts
+- https://github.com/wm-private-cloud/private-cloud-factory - This template repository as a kick-starter for workflow orchestration

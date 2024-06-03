@@ -7,9 +7,9 @@ A template repository for kick-starting Private Cloud CI/CD creation for webMeth
 - :package: Container registry for pushing your customized image(s)
 - :cloud: Kubernetes cluster for deploying your solution(s)
 - :key: Define the following secrets for accessing the **webMethods** services:
-  - SAG_CR_USER (secret) - Username for https://containers.webmethods.io/
-  - SAG_CR_PASSWORD (secret) - Password/token for https://containers.webmethods.io/
-  - SAG_WPM_TOKEN (secret) - Token for https://packages.webmethods.io/
+  - WM_CR_USER (secret) - Username for https://containers.webmethods.io/
+  - WM_CR_PASSWORD (secret) - Password/token for https://containers.webmethods.io/
+  - WM_WPM_TOKEN (secret) - Token for https://packages.webmethods.io/
 - :key: Define the following secrets/vars for accessing **your organization** services:
   - DOCKER_REGISTRY (var) - Your container registry server
   - DOCKER_USER (secret) - Username for your container registry

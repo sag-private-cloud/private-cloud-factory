@@ -6,9 +6,9 @@ A template repository for kick-starting Private Cloud CI/CD creation for webMeth
 # Prerequisites
 - :package: Container registry for pushing your customized image(s)
 - :cloud: Kubernetes cluster for deploying your solution(s)
-- :key: Define the following secrets for accessing the **Software AG** services:
-  - SAG_CR_USER (secret) - Username for https://containers.softwareag.com/
-  - SAG_CR_PASSWORD (secret) - Password/token for https://containers.softwareag.com/
+- :key: Define the following secrets for accessing the **webMethods** services:
+  - SAG_CR_USER (secret) - Username for https://containers.webmethods.io/
+  - SAG_CR_PASSWORD (secret) - Password/token for https://containers.webmethods.io/
   - SAG_WPM_TOKEN (secret) - Token for https://packages.webmethods.io/
 - :key: Define the following secrets/vars for accessing **your organization** services:
   - DOCKER_REGISTRY (var) - Your container registry server
@@ -33,7 +33,7 @@ flowchart LR;
     end
    
     subgraph Build
-      B[Solution Image Build] -->|pull image| A([containers.softwareag.com]);
+      B[Solution Image Build] -->|pull image| A([containers.webmethods.io]);
       B[Solution Image Build] -->|pull packages| C([packages.webmethods.io]);
       B[Solution Image Build] -->|pull packages| D([Organization custom packages in github.com]);
     end
@@ -49,8 +49,8 @@ flowchart LR;
     style D fill:#FFFF00
 ```
 
-# Used Software AG services and tools
-- https://containers.softwareag.com/ - Software AG Container registry
+# Used webMethods services and tools
+- https://containers.webmethods.io/ - webMethods Container registry
 - https://packages.webmethods.io/ - webMethods Packages registry
 - https://charts.webmethods.io - webMethods Helm charts registry
 - https://github.com/wm-private-cloud/wm-build-image - webMethods GitHub action for building customized webMethods container images

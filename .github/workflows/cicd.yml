@@ -18,8 +18,8 @@ on:
         default: 'msr:dev'
         required: true
         type: string
-      sagPackages:
-        description: 'List of Software AG packages that you need on top of the base runtime (space-separated)'
+      wmPackages:
+        description: 'List of webMethods packages that you need on top of the base runtime (space-separated)'
         default: ''
         type: string
       customPackages:
@@ -57,8 +57,8 @@ on:
         default: 'msr:dev'
         required: true
         type: string
-      sagPackages:
-        description: 'List of Software AG packages that you need on top of the base runtime (space-separated)'
+      wmPackages:
+        description: 'List of webMethods AG packages that you need on top of the base runtime (space-separated)'
         default: ''
         type: string
       customPackages:
@@ -81,9 +81,9 @@ on:
         type: string
 
 env:
-  SAG_CR_USER: ${{ secrets.SAG_CR_USER }}
-  SAG_CR_PASSWORD: ${{ secrets.SAG_CR_PASSWORD }}
-  SAG_WPM_TOKEN: ${{ secrets.SAG_WPM_TOKEN }}
+  WM_CR_USER: ${{ secrets.WM_CR_USER }}
+  WM_CR_PASSWORD: ${{ secrets.WM_CR_PASSWORD }}
+  WM_WPM_TOKEN: ${{ secrets.WM_WPM_TOKEN }}
   
   DOCKER_USER: ${{ secrets.DOCKER_USER }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -102,9 +102,9 @@ jobs:
       
       - name: Validate inputs
         run: |
-          ./scripts/validate_input.sh SAG_CR_USER "${SAG_CR_USER}"
-          ./scripts/validate_input.sh SAG_CR_PASSWORD "${SAG_CR_PASSWORD}"
-          ./scripts/validate_input.sh SAG_WPM_TOKEN "${SAG_WPM_TOKEN}"
+          ./scripts/validate_input.sh WM_CR_USER "${WM_CR_USER}"
+          ./scripts/validate_input.sh WM_CR_PASSWORD "${WM_CR_PASSWORD}"
+          ./scripts/validate_input.sh WM_WPM_TOKEN "${WM_WPM_TOKEN}"
           ./scripts/validate_input.sh DOCKER_USER "${DOCKER_USER}"
           ./scripts/validate_input.sh DOCKER_PASSWORD "${DOCKER_PASSWORD}"
           ./scripts/validate_input.sh DOCKER_REGISTRY "${DOCKER_REGISTRY}"
@@ -121,8 +121,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Login to Software AG Container Registry
-        run: docker login -u ${SAG_CR_USER} -p ${SAG_CR_PASSWORD} sagcr.azurecr.io
+      - name: Login to webMethods Container Registry
+        run: docker login -u ${WM_CR_USER} -p ${WM_CR_PASSWORD} sagcr.azurecr.io
           
       - name: Build custom image
         id: build-image
@@ -133,8 +133,8 @@ jobs:
           base-runtime: ${{ inputs.baseImage }}
           image-name: ${DOCKER_REGISTRY}/${{ inputs.dockerImage }}
           wpm-registry: softwareag
-          wpm-registry-token: ${SAG_WPM_TOKEN}
-          packages: ${{ inputs.sagPackages }}
+          wpm-registry-token: ${WM_WPM_TOKEN}
+          packages: ${{ inputs.wmPackages }}
           custom-packages: ${{ inputs.customPackages }}
           custom-packages-org-url: ${{ inputs.customPackagesOrgUrl }}
 

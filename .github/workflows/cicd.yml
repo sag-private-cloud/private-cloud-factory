@@ -22,6 +22,10 @@ on:
         description: 'List of webMethods packages that you need on top of the base runtime (space-separated)'
         default: ''
         type: string
+      wpmRegistry:
+        description: 'The sub-registry in https://packages.webmethods.io to use for installing webMethods packages'
+        default: 'licensed'
+        type: string
       customPackages:
         description: 'List of custom packages that you need on top of the base runtime (space-separated)'
         default: ''
@@ -60,6 +64,10 @@ on:
       wmPackages:
         description: 'List of webMethods AG packages that you need on top of the base runtime (space-separated)'
         default: ''
+        type: string
+      wpmRegistry:
+        description: 'The sub-registry in https://packages.webmethods.io to use for installing webMethods packages'
+        default: 'licensed'
         type: string
       customPackages:
         description: 'List of custom packages that you need on top of the base runtime (spece-separated)'
@@ -132,7 +140,7 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
           base-runtime: ${{ inputs.baseImage }}
           image-name: ${DOCKER_REGISTRY}/${{ inputs.dockerImage }}
-          wpm-registry: softwareag
+          wpm-registry: ${{ inputs.wpmRegistry }}
           wpm-registry-token: ${WM_WPM_TOKEN}
           packages: ${{ inputs.wmPackages }}
           custom-packages: ${{ inputs.customPackages }}
